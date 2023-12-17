@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main
-    paths: [/src/**]
+    paths:
+      - '/src/**'
+      - '.github/workflows/zig.yml'
 
 jobs:
   test:
