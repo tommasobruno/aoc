@@ -11,4 +11,7 @@ pub fn main() !void {
     try list.push(3);
 
     std.debug.print("{any}\n", .{list.items[0..list.pos]});
+
+    _ = list.pop();
+    std.debug.print("{any}\n", .{list.items[0..list.pos]});
 }

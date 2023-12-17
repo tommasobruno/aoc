@@ -1,4 +1,5 @@
 const std = @import("std");
+const test_utils = std.testing;
 
 pub fn GenericList(comptime T: type) type {
     return struct {
@@ -32,5 +33,35 @@ pub fn GenericList(comptime T: type) type {
             self.items[pos] = v;
             self.pos = pos + 1;
         }
+
+        pub fn pop(self: *Self) ?T {
+            const pos = self.pos;
+            const last = self.items[pos];
+            if (last != undefined) {
+                if (pos > 0) {
+                    self.pos = pos - 1;
+                }
+
+                self.items[pos] = undefined;
+                return last;
+            }
+
+            return null;
+        }
     };
+}
+
+test "GenericList no leaks" {
+    var list = try GenericList(u8).init(test_utils.allocator);
+    defer list.deinit();
+
+    try list.push(3);
+    try list.push(2);
+
+    try test_utils.expectEqual(list.items[0], 3);
+    try test_utils.expectEqual(list.items[1], 2);
+
+    _ = list.pop();
+
+    try test_utils.expectEqual(list.items[1], undefined);
 }
