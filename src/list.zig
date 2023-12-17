@@ -38,9 +38,7 @@ pub fn GenericList(comptime T: type) type {
             const pos = self.pos;
             const last = self.items[pos];
             if (last != undefined) {
-                if (pos > 0) {
-                    self.pos = pos - 1;
-                }
+                self.pos = pos - 1;
 
                 self.items[pos] = undefined;
                 return last;
