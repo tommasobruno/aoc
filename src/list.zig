@@ -7,7 +7,7 @@ pub fn GenericList(comptime T: type) type {
         pos: usize,
         items: []T,
 
-        const Self = GenericList(T);
+        const Self = @This();
 
         pub fn init(allocator: std.mem.Allocator) !Self {
             return .{ .allocator = allocator, .items = try allocator.alloc(T, 4), .pos = 0 };
