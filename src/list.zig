@@ -36,12 +36,14 @@ pub fn GenericList(comptime T: type) type {
 
         pub fn pop(self: *Self) ?T {
             const pos = self.pos;
-            const last = self.items[pos - 1];
 
+            if (pos == 0) {
+                self.items[pos] = undefined;
+                return self.items[pos];
+            }
             self.pos = pos - 1;
             self.items[pos - 1] = undefined;
-
-            return last;
+            return self.items[pos - 1];
         }
     };
 }
@@ -61,4 +63,7 @@ test "GenericList no leaks" {
 
     try test_utils.expect(list.items[0] != 3);
     try test_utils.expect(list.items[1] != 2);
+
+    _ = list.pop();
+    try test_utils.expectEqual(list.pos, 0);
 }
