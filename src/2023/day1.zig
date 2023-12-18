@@ -10,12 +10,13 @@ pub fn solvePartOne(allocator: std.mem.Allocator) !usize {
 
     var sum: usize = 0;
     while (try rdr.readUntilDelimiterOrEofAlloc(allocator, '\n', 4096)) |line| {
+        defer allocator.free(line);
+
         var first: ?u8 = null;
         var last: ?u8 = null;
 
         if (line.len < 2) break;
 
-        defer allocator.free(line);
         for (line) |char| {
             if (std.ascii.isDigit(char)) {
                 if (first == null) {
